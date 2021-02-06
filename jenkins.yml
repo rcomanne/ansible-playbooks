@@ -1,0 +1,8 @@
+---
+- hosts: contabo
+  remote_user: rcomanne
+
+  roles:
+    - base
+    - java
+    - jenkins

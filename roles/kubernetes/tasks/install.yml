@@ -1,0 +1,20 @@
+---
+- name: Add GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+# TODO: No focal repository yet for k8s
+- name: Add repository
+  apt_repository:
+    repo: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+    update_cache: true
+
+- name: Install
+  apt:
+    name:
+      - kubeadm
+      - kubelet
+      - kubernetes-cni
+    state: latest

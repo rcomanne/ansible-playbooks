@@ -1,0 +1,4 @@
+---
+user: rcomanne
+group: rcomanne
+home_dir: "/home/{{ user }}"

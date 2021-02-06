@@ -1,0 +1,6 @@
+---
+- name: Users
+  import_tasks: users.yml
+
+- name: SSH
+  import_tasks: ssh.yml

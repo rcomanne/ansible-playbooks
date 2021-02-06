@@ -1,0 +1,24 @@
+---
+- name: Copy Traefik resources to remote
+  copy:
+    src: "{{ item }}"
+    dest: /tmp
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0644
+  loop:
+    - traefik_cluster_resources.yml
+    - traefik_deployment.yml
+    - traefik_service.yml
+
+- name: Apply cluster resources
+  command:
+    cmd: kubectl apply -f /tmp/traefik_cluster_resources.yml
+
+- name: Ensure Traefik service exists
+  command:
+    cmd: kubectl apply -f /tmp/traefik_service.yml
+
+- name: Ensure Traefik deployment exists
+  command:
+    cmd: kubectl apply -f /tmp/traefik_deployment.yml

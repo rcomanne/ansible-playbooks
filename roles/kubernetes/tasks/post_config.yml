@@ -1,0 +1,12 @@
+---
+- name: Add kube-flannel
+  command:
+    cmd: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+- name: Add kube-flannel-rbac
+  command:
+    cmd: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+
+#- name: Allow master to run and manage pods
+#  command:
+#    cmd: kubectl taint nodes --all node-role.kubernetes.io/master-

@@ -1,0 +1,20 @@
+---
+- name: Add MetalLB namespace
+  command:
+    cmd: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/main/manifests/namespace.yaml
+
+- name: Add MetalLB
+  command:
+    cmd: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/main/manifests/metallb.yaml
+
+- name: Template out MetalLB ConfigMap
+  template:
+    src: metallb_configmap.yml.j2
+    dest: /tmp/metallb_configmap.yml
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600
+
+- name: Apply MetalLB ConfigMap
+  command:
+    cmd: kubectl apply -f /tmp/metallb_configmap.yml

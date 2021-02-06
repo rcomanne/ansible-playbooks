@@ -1,0 +1,9 @@
+---
+- name: Ensure SWAP is disabled
+  command: swapoff -a
+
+- name: Ensure SWAP is disabled in FSTAB
+  lineinfile:
+    path: /etc/fstab
+    regexp: 'swap'
+    state: absent

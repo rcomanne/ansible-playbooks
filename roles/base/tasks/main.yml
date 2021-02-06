@@ -1,0 +1,4 @@
+---
+- name: Common
+  import_tasks: common.yml
+  become: yes

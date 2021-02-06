@@ -1,0 +1,22 @@
+---
+- name: Init k8s
+  command:
+    cmd: "kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{ ansible_facts['eth0']['ipv4']['address'] }}"
+    creates: /etc/kubernetes/admin.conf
+
+- name: Ensure .kube dir exists
+  file:
+    path: "{{ home_dir }}/.kube"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0700
+
+- name: Copy admin config to local
+  copy:
+    src: /etc/kubernetes/admin.conf
+    remote_src: true
+    dest: "{{ home_dir }}/.kube/config"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600

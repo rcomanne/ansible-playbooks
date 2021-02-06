@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-conf
+  namespace: traefik
+data:
+  traefik.toml: |
+    [log]
+      level = "DEBUG"
+      filePath = "/var/log/traefik.log"
+      format = "common"
+    [accessLog]
+      filePath = "/var/log/access.log"
+      format = "common"
+    [entryPoints]
+      [entryPoints.http]
+        address = ":80"
+          [entryPoints.http.http.redirections.entryPoint]
+            to = "https"
+      [entryPoints.https]
+        address = ":443"
+          [entryPoints.https.http.tls]
+    [api]
+      insecure = true
+      dashboard = true
+    [providers]
+      [providers.kubernetesIngress]
+      [providers.kubernetesCRD]
+    [ping]
+      entryPoint = "http"
+    [certificatesResolvers]
+      [certificatesResolvers.cr.acme]
+        email = "ralph@comanne.eu"
+        storage = "/acme.json"
+        [certificatesResolvers.cr.acme.tlsChallenge]

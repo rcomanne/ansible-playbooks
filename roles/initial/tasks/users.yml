@@ -1,0 +1,26 @@
+---
+- name: Ensure rcomanne user exists
+  user:
+    name: "{{ user }}"
+    group: "{{ group }}"
+    home: "{{ home_dir }}"
+    state: present
+    groups:
+      - sudo
+    append: true
+
+- name: Ensure SSH dir structure is correct
+  file:
+    path: "{{ home_dir }}/.ssh"
+    state: directory
+    mode: 0755
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+- name: Ensure authorized keys are present
+  authorized_key:
+    user: "{{ user }}"
+    state: present
+    key: "{{ item }}"
+  loop:
+    - "{{ lookup('file', '/home/rcomanne/.ssh/id_rsa.pub') }}"

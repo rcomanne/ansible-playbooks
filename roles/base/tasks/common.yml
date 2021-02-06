@@ -1,0 +1,21 @@
+---
+- name: Ensure commonly needed packages are installed and up to date
+  apt:
+    name:
+      - software-properties-common
+      - apt-transport-https
+      - curl
+      - wget
+      - gnupg
+    state: latest
+
+- name: Ensure hostname is set
+  hostname:
+    name: rcomanne
+
+- name: Ensure locale set
+  template:
+    src: locale.conf.j2
+    dest: /etc/default/locale
+  notify:
+    - reboot system

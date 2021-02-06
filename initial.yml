@@ -1,0 +1,6 @@
+---
+- hosts: contabo
+  remote_user: root
+
+  roles:
+    - initial
