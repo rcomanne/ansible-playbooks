@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: traefik-pv
+  namespace: traefik
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 4Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/k8s/traefik"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: traefik-pvc
+  namespace: traefik
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 4Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany

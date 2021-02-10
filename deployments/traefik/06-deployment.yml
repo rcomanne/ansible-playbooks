@@ -23,6 +23,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
+            - mountPath: /acme
+              name: acme
           args:
             - --configFile=/config/traefik.toml
           ports:
@@ -36,3 +38,6 @@ spec:
         - name: config
           configMap:
             name: traefik-conf
+        - name: acme
+          persistentVolumeClaim:
+            claimName: traefik-pvc

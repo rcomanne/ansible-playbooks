@@ -12,24 +12,30 @@ data:
     [accessLog]
       filePath = "/var/log/access.log"
       format = "common"
+
     [entryPoints]
       [entryPoints.http]
         address = ":80"
           [entryPoints.http.http.redirections.entryPoint]
             to = "https"
+            scheme = "https"
       [entryPoints.https]
         address = ":443"
           [entryPoints.https.http.tls]
+
     [api]
       insecure = true
       dashboard = true
+
     [providers]
       [providers.kubernetesIngress]
       [providers.kubernetesCRD]
+
     [ping]
       entryPoint = "http"
+
     [certificatesResolvers]
       [certificatesResolvers.cr.acme]
         email = "ralph@comanne.eu"
-        storage = "/acme.json"
+        storage = "/acme/data.json"
         [certificatesResolvers.cr.acme.tlsChallenge]

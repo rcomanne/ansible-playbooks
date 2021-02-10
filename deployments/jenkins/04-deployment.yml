@@ -20,9 +20,16 @@ spec:
           ports:
             - name: web
               containerPort: 8080
+            - name: slaves
+              containerPort: 50000
           volumeMounts:
             - name: jenkins-home
               mountPath: /var/jenkins_home
+          livenessProbe:
+            httpGet:
+              port: web
+              path: /login
       volumes:
         - name: jenkins-home
-          emptyDir: { }
+          persistentVolumeClaim:
+            claimName: jenkins-pvc
