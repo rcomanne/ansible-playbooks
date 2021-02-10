@@ -29,6 +29,7 @@ data:
 
     [providers]
       [providers.kubernetesIngress]
+        ingressClass = "traefik-external"
       [providers.kubernetesCRD]
 
     [ping]

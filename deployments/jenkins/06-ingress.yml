@@ -4,6 +4,7 @@ metadata:
   name: jenkins
   namespace: jenkins
   annotations:
+    traefik.ingress.kubernetes.io/ingress.class: "traefik-external"
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:

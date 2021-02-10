@@ -10,3 +10,19 @@
 #- name: Allow master to run and manage pods
 #  command:
 #    cmd: kubectl taint nodes --all node-role.kubernetes.io/master-
+
+- name: Add required mnt dirs for pvc
+  file:
+    state: directory
+    path: "/mnt/k8s/{{ item.path }}"
+    recurse: true
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0755
+  become: yes
+  become_user: root
+  loop:
+    - { owner: root, group: root, path: traefik }
+    - { owner: "{{ user }}", group: "{{ group }}", path: jenkins }
+    - { owner: "{{ user }}", group: "{{ group }}", path: docker }
+    - { owner: "{{ user }}", group: "{{ group }}", path: maven }
