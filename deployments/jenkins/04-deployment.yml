@@ -14,21 +14,45 @@ spec:
       labels:
         app: jenkins
     spec:
+      serviceAccountName: jenkins
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts-jdk11
+          imagePullPolicy: Always
           ports:
             - name: web
               containerPort: 8080
-            - name: slaves
+            - name: agents
               containerPort: 50000
           volumeMounts:
             - name: jenkins-home
               mountPath: /var/jenkins_home
+          startupProbe:
+            httpGet:
+              port: web
+              path: /login
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              port: web
+              path: /login
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 2
+            failureThreshold: 5
           livenessProbe:
             httpGet:
               port: web
               path: /login
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
       volumes:
         - name: jenkins-home
           persistentVolumeClaim:

@@ -11,6 +11,6 @@ spec:
       protocol: TCP
       port: 8080
       targetPort: web
-    - name: slaves
+    - name: agents
       port: 50000
-      targetPort: slaves
+      targetPort: agents
