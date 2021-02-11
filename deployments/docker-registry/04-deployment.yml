@@ -18,13 +18,25 @@ spec:
         - name: docker-registry
           image: registry:2.7
           imagePullPolicy: Always
+          env:
+            - name: REGISTRY_AUTH
+              value: htpasswd
+            - name: REGISTRY_AUTH_HTPASSWD_REALM
+              value: "Registry Realm"
+            - name: REGISTRY_AUTH_HTPASSWD_PATH
+              value: /auth/htpasswd
           ports:
             - name: web
               containerPort: 5000
           volumeMounts:
             - name: registry-data
               mountPath: /var/lib/registry
+            - name: basic-auth
+              mountPath: /auth
       volumes:
         - name: registry-data
           persistentVolumeClaim:
             claimName: docker-registry-pvc
+        - name: basic-auth
+          configMap:
+            name: docker-registry-basic-auth
