@@ -12,11 +12,11 @@
     group: "{{ group }}"
     mode: 0700
 
-- name: Copy admin config to local
+- name: Copy admin config.yml to local
   copy:
     src: /etc/kubernetes/admin.conf
     remote_src: true
-    dest: "{{ home_dir }}/.kube/config"
+    dest: "{{ home_dir }}/.kube/config.yml"
     owner: "{{ user }}"
     group: "{{ group }}"
     mode: 0600
