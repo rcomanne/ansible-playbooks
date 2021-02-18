@@ -4,10 +4,11 @@ metadata:
   name: traefik
   namespace: traefik
   annotations:
-    traefik.ingress.kubernetes.io/ingress.class: "traefik-external"
+    traefik.ingress.kubernetes.io/router.entrypoints: http,https
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:
+  ingressClassName: 'traefik-external'
   rules:
     - host: traefik.rcomanne.nl
       http:

@@ -23,6 +23,13 @@ data:
         address = ":443"
           [entryPoints.https.http.tls]
 
+      [entryPoints.valheim0]
+        address = ":2456/udp"
+      [entryPoints.valheim1]
+        address = ":2457/udp"
+      [entryPoints.valheim2]
+        address = ":2458/udp"
+
     [api]
       insecure = true
       dashboard = true
@@ -30,7 +37,6 @@ data:
     [providers]
       [providers.kubernetesIngress]
         ingressClass = "traefik-external"
-      [providers.kubernetesCRD]
 
     [ping]
       entryPoint = "http"
