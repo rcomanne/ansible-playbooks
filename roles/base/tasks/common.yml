@@ -7,6 +7,7 @@
       - curl
       - wget
       - gnupg
+      - fail2ban
     state: latest
 
 - name: Ensure hostname is set
@@ -19,3 +20,27 @@
     dest: /etc/default/locale
   notify:
     - reboot system
+
+- name: Configure port based UFW rules
+  ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    protocol: "{{ item.protocol }}"
+    comment: "{{ item.comment }}"
+  loop:
+    - { port: 20, protocol:  tcp, comment: "SSH" }
+    - { port: 80, protocol:  tcp, comment: "HTTP" }
+    - { port: 443, protocol:  tcp, comment: "HTTPS" }
+    - { port: 6443, protocol:  tcp, comment: "k8s kube-apiserver" }
+    - { port: 10250, protocol:  tcp, comment: "k8s kubelet" }
+    - { port: 10253, protocol:  tcp, comment: "k8s kube-proxy" }
+    - { port: 2456, protocol:  udp, comment: "valheim port" }
+    - { port: 2457, protocol:  udp, comment: "valheim port" }
+    - { port: 2457, protocol:  udp, comment: "valheim port" }
+  notify: reload ufw
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+    default: deny
+

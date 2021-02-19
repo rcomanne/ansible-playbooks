@@ -1,3 +1,9 @@
 ---
 - name: reboot system
   reboot:
+
+- name: reload ufw
+  ufw:
+    state: reloaded
+  become: yes
+  become_user: root
