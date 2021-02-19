@@ -28,7 +28,7 @@
     protocol: "{{ item.protocol }}"
     comment: "{{ item.comment }}"
   loop:
-    - { port: 20, protocol:  tcp, comment: "SSH" }
+    - { port: 22, protocol:  tcp, comment: "SSH" }
     - { port: 80, protocol:  tcp, comment: "HTTP" }
     - { port: 443, protocol:  tcp, comment: "HTTPS" }
     - { port: 6443, protocol:  tcp, comment: "k8s kube-apiserver" }
