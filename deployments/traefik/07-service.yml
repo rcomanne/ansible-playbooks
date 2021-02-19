@@ -1,8 +1,13 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: traefik
+  name: traefik-tcp
   namespace: traefik
+  labels:
+    app: traefik
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "shared-ip"
 spec:
   ports:
     - protocol: TCP
@@ -11,9 +16,48 @@ spec:
     - protocol: TCP
       name: https
       port: 443
-    - protocol: TCP
-      name: admin
-      port: 8080
   type: LoadBalancer
   selector:
     app: traefik
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+  labels:
+    app: traefik
+spec:
+  ports:
+    - protocol: TCP
+      name: admin
+      port: 8080
+  type: ClusterIP
+  selector:
+    app: traefik
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: traefik-udp
+#  namespace: traefik
+#  labels:
+#    app: traefik
+#  annotations:
+#    metallb.universe.tf/allow-shared-ip: "shared-ip"
+#spec:
+#  ports:
+#    - protocol: UDP
+#      name: valheim0
+#      port: 2456
+#    - protocol: UDP
+#      name: valheim1
+#      port: 2457
+#    - protocol: UDP
+#      name: valheim2
+#      port: 2458
+#  type: LoadBalancer
+#  selector:
+#    app: traefik

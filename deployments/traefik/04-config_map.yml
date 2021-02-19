@@ -15,20 +15,14 @@ data:
 
     [entryPoints]
       [entryPoints.http]
-        address = ":80"
+        address = ":80/tcp"
           [entryPoints.http.http.redirections.entryPoint]
             to = "https"
             scheme = "https"
+            permanent = true
       [entryPoints.https]
-        address = ":443"
+        address = ":443/tcp"
           [entryPoints.https.http.tls]
-
-      [entryPoints.valheim0]
-        address = ":2456/udp"
-      [entryPoints.valheim1]
-        address = ":2457/udp"
-      [entryPoints.valheim2]
-        address = ":2458/udp"
 
     [api]
       insecure = true

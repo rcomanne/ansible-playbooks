@@ -1,0 +1,35 @@
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: valheim-server
+#  namespace: game-servers
+#  annotations:
+#    traefik.ingress.kubernetes.io/router.entrypoints: valheim0,valheim1,valheim2
+#spec:
+#  ingressClassName: 'traefik-external'
+#  rules:
+#    - host: game.rcomanne.nl
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: valheim-server
+#                port:
+#                  name: valheim0
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: valheim-server
+#                port:
+#                  name: valheim1
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: valheim-server
+#                port:
+#                  name: valheim2
