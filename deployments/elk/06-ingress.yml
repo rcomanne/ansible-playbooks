@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana
+  namespace: elk
+  labels:
+    app.kubernetes.io/name: elk
+    app.kubernetes.io/component: kibana
+    app.kubernetes.io/version: 7.11.1
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: http,https
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: cr
+spec:
+  ingressClassName: 'traefik-external'
+  rules:
+    - host: kibana.rcomanne.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana
+                port:
+                  name: web
+  tls:
+    - hosts:
+        - kibana.rcomanne.nl

@@ -36,7 +36,7 @@
     - { port: 10253, protocol:  tcp, comment: "k8s kube-proxy" }
     - { port: 2456, protocol:  udp, comment: "valheim port" }
     - { port: 2457, protocol:  udp, comment: "valheim port" }
-    - { port: 2457, protocol:  udp, comment: "valheim port" }
+    - { port: 2458, protocol:  udp, comment: "valheim port" }
   notify: reload ufw
 
 - name: Enable UFW

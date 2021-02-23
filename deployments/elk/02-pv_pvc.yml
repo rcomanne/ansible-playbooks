@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-pv
+  namespace: elk
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 32Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/k8s/elk"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch-pvc
+  namespace: elk
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 32Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
