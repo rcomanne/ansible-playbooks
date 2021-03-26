@@ -75,5 +75,4 @@ fabric.properties
 ### Ansible template
 *.retry
 
-deployments/docker-registry/03-basic-auth.yml
-deployments/elk/03-basic-auth.yml
+deployments/**/??-basic-auth.yml

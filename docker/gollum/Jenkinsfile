@@ -1,0 +1,52 @@
+pipeline {
+  agent {
+    label 'jenkins-agent'
+  }
+
+  triggers {
+    githubPush()
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        withCredentials(credentialsId: '', keyFileVariable: 'GIT_KEY_FILE') {
+          sh '''
+            echo Building...
+            docker build -t gollum:${BUILD_ID} --build-arg ssh_key="$(cat ${GIT_KEY_FILE})"  docker/gollum/
+          '''
+        }
+      }
+    }
+
+    stage('Release') {
+      steps {
+        withDockerRegistry(credentialsId: '5d633ea9-05d5-4038-bf63-a723025b95ff', url: 'https://docker.rcomanne.nl') {
+          sh '''
+            echo "Tagging and pushing image with BUILD_ID tag ${BUILD_ID}"
+            docker tag gollum:${BUILD_ID} docker.rcomanne.nl/gollum:${BUILD_ID}
+            docker push docker.rcomanne.nl/gollum:${BUILD_ID}
+            
+            echo "Tagging and pushing image with latest tag"
+            docker tag gollum:${BUILD_ID} docker.rcomanne.nl/gollum:latest
+            docker push docker.rcomanne.nl/gollum:latest
+          '''
+        }
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        withKubeConfig(credentialsId: 'ce42c69e-6274-4126-93f8-4339dfd0ad85', namespace: 'services') {
+          echo 'Deploying...'
+          sh '''
+            kubectl apply -f deployments/gollum
+            kubectl rollout restart deployment gollum
+            kubectl rollout status deployment gollum
+          '''
+        }
+      }
+
+    }
+  }
+}
