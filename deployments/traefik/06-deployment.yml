@@ -20,13 +20,12 @@ spec:
       containers:
         - name: traefik
           image: traefik:v2.4
+          imagePullPolicy: Always
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /etc/traefik
               name: config
             - mountPath: /acme
               name: acme
-          args:
-            - --configFile=/config/traefik.toml
           ports:
             - name: http
               containerPort: 80

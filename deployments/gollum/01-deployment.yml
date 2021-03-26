@@ -25,5 +25,10 @@ spec:
           ports:
             - name: web
               containerPort: 4567
+          startupProbe:
+            httpGet:
+              port: web
+              path: /
+              scheme: HTTP
       imagePullSecrets:
         - name: private-registry
