@@ -12,6 +12,7 @@ pipeline {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: 'd0111bf1-b26f-4017-b785-5d9c3278d229', keyFileVariable: 'GIT_KEY_FILE')]) {
           sh '''
+            set -x
             echo Building...
             docker build -t gollum:${BUILD_ID} --build-arg ssh_key="$(cat ${GIT_KEY_FILE})"  docker/gollum/
           '''
