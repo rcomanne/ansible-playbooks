@@ -14,7 +14,7 @@ pipeline {
           sh '''
             set -x
             echo Building...
-            docker build -t gollum:${BUILD_ID} --build-arg ssh_key="$(cat ${GIT_KEY_FILE})"  docker/gollum/
+            docker build -t gollum:${BUILD_ID} --build-arg ssh_key="$(cat ${GIT_KEY_FILE})" --build-arg git_mail="ralph@comanne.eu" --build-arg git_name="Ralph Comanne"  docker/gollum/
           '''
         }
       }

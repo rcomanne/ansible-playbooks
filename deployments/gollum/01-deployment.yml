@@ -19,9 +19,14 @@ spec:
       containers:
         - name: gollum
           image: docker.rcomanne.nl/gollum
+          imagePullPolicy: Always
           env:
             - name: GIT_URL
               value: 'git@github.com:rcomanne/wiki.git'
+            - name: GIT_MAIL
+              value: 'ralph@comanne.eu'
+            - name: GIT_USERNAME
+              value: 'Ralph Comanne'
           ports:
             - name: web
               containerPort: 4567
