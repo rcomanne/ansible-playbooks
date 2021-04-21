@@ -7,3 +7,14 @@ metadata:
 spec:
   basicAuth:
     secret: basic-auth
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-homepage
+  namespace: traefik
+spec:
+  redirectRegex:
+    regex: '^http(s?)://(.*)\.rcomanne\.nl'
+    replacement: 'https://www.rcomanne.nl'
