@@ -18,3 +18,14 @@ spec:
   redirectRegex:
     regex: '^http(s?)://(.*)\.rcomanne\.nl'
     replacement: 'https://www.rcomanne.nl'
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-api-prefix
+  namespace: traefik
+spec:
+  stripPrefix:
+    prefix:
+      - /homepage
