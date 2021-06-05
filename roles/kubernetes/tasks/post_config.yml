@@ -28,6 +28,8 @@
     - { owner: "{{ user }}", group: "{{ group }}", path: docker }
     - { owner: "{{ user }}", group: "{{ group }}", path: maven }
     - { owner: "{{ user }}", group: "{{ group }}", path: games }
+    - { owner: "{{ user }}", group: "{{ group }}", path: vault }
+    - { owner: 100001, group: 10001, path: loki }
 
 - name: Ensure Max Map count is configured for ELK (CMD)
   command:

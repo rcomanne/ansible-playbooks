@@ -1,0 +1,47 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: traefik
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: monitoring
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: docker
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: jenkins
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: vault
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: services
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: elk
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: game-servers

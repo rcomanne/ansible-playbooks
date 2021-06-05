@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: promtail
+spec:
+  selector:
+    matchLabels:
+      name: promtail
+  template:
+    metadata:
+      labels:
+        name: promtail
+    spec:
+      serviceAccountName: promtail
+      volumes:
+        - name: promtail-config
+          configMap:
+            name: promtail
+        - name: logs
+          hostPath:
+            path: /var/log
+      containers:
+        - name: promtail
+          image: grafana/promtail:2.2.1
+          args:
+            - -config.file=/etc/promtail/promtail.yaml
+          volumeMounts:
+            - name: logs
+              mountPath: /var/log/
+            - name: promtail-config
+              mountPath: /etc/promtail
