@@ -5,3 +5,6 @@ metadata:
   name: grafana
   namespace: monitoring
 data:
+  grafana.ini: |
+    [security]
+    admin_user = rcomanne

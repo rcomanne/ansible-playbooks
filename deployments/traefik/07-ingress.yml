@@ -4,6 +4,10 @@ kind: Ingress
 metadata:
   name: traefik
   namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: http,https
     traefik.ingress.kubernetes.io/router.tls: "true"

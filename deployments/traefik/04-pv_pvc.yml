@@ -4,6 +4,10 @@ kind: PersistentVolume
 metadata:
   name: traefik-pv
   namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 spec:
   storageClassName: manual
   capacity:
@@ -20,6 +24,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: traefik-pvc
   namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 spec:
   storageClassName: manual
   resources:

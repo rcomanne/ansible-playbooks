@@ -5,16 +5,21 @@ metadata:
   namespace: traefik
   name: traefik
   labels:
-    app: traefik
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: traefik
+      app.kubernetes.io/name: traefik
+      app.kubernetes.io/component: traefik
   template:
     metadata:
       labels:
-        app: traefik
+        app.kubernetes.io/name: traefik
+        app.kubernetes.io/component: traefik
+        app.kubernetes.io/version: 2
     spec:
       serviceAccountName: traefik
       containers:

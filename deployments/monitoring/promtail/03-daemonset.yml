@@ -3,30 +3,81 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: promtail
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: promtail
+    app.kubernetes.io/component: promtail
 spec:
   selector:
     matchLabels:
-      name: promtail
+      app.kubernetes.io/name: promtail
+      app.kubernetes.io/component: promtail
   template:
     metadata:
       labels:
-        name: promtail
+        app.kubernetes.io/name: promtail
+        app.kubernetes.io/component: promtail
     spec:
       serviceAccountName: promtail
-      volumes:
-        - name: promtail-config
-          configMap:
-            name: promtail
-        - name: logs
-          hostPath:
-            path: /var/log
       containers:
         - name: promtail
           image: grafana/promtail:2.2.1
           args:
             - -config.file=/etc/promtail/promtail.yaml
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+                  apiVersion: v1
+          ports:
+            - containerPort: 3101
+              name: http-metrics
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /ready
+              port: http-metrics
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
           volumeMounts:
-            - name: logs
-              mountPath: /var/log/
-            - name: promtail-config
-              mountPath: /etc/promtail
+            - mountPath: /etc/promtail
+              name: config
+            - mountPath: /run/promtail
+              name: run
+            - mountPath: /var/lib/docker/containers
+              name: containers
+              readOnly: true
+            - mountPath: /var/log/pods
+              name: pods
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            defaultMode: 420
+            name: promtail
+#          secret:
+#            defaultMode: 420
+#            secretName: promtail
+        - hostPath:
+            path: /run/promtail
+          name: run
+        - hostPath:
+            path: /var/lib/docker/containers
+          name: containers
+        - hostPath:
+            path: /var/log/pods
+          name: pods
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0

@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   name: traefik-conf
   namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 data:
   traefik.toml: |
     [log]

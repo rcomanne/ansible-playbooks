@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: promtail-clusterrole
+  name: promtail
 rules:
   - apiGroups: [""]
     resources:
@@ -20,11 +20,12 @@ kind: ServiceAccount
 metadata:
   name: promtail
   namespace: monitoring
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: promtail-clusterrolebinding
+  name: promtail
   namespace: monitoring
 subjects:
   - kind: ServiceAccount

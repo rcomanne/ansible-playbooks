@@ -5,7 +5,9 @@ metadata:
   name: traefik-tcp
   namespace: traefik
   labels:
-    app: traefik
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
   annotations:
     metallb.universe.tf/allow-shared-ip: "shared-ip"
 spec:
@@ -27,7 +29,9 @@ metadata:
   name: traefik-dashboard
   namespace: traefik
   labels:
-    app: traefik
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 spec:
   ports:
     - protocol: TCP
@@ -35,7 +39,9 @@ spec:
       port: 8080
   type: ClusterIP
   selector:
-    app: traefik
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: traefik
+    app.kubernetes.io/version: 2
 
 #---
 #apiVersion: v1
