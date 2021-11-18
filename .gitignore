@@ -76,3 +76,4 @@ fabric.properties
 *.retry
 
 deployments/**/??-basic-auth.yml
+deployments/**/??-secret.yml

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry-gui
+  namespace: docker
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: https
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: cr
+spec:
+  ingressClassName: 'traefik-external'
+  rules:
+    - host: registry.rcomanne.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: registry-gui
+                port:
+                  name: web
+  tls:
+    - hosts:
+        - registry.rcomanne.nl

@@ -1,0 +1,52 @@
+pipeline {
+  agent {
+    label 'jenkins-agent'
+  }
+
+  triggers {
+    githubPush()
+  }
+
+  environment {
+    REGISTRY = "docker.rcomanne.nl"
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh '''
+          echo Building...
+          docker build -t ${REGISTRY}/registry-gui:${BUILD_ID} docker/registry-gui/
+        '''
+      }
+    }
+
+    stage('Release') {
+      steps {
+        withDockerRegistry(credentialsId: '5d633ea9-05d5-4038-bf63-a723025b95ff', url: 'https://docker.rcomanne.nl') {
+          sh '''
+            echo "Pushing image with BUILD_ID tag ${BUILD_ID}"
+            docker push ${REGISTRY}/registry-gui:${BUILD_ID}
+            
+            echo "Tagging and pushing image with latest tag"
+            docker tag ${REGISTRY}/registry-gui:${BUILD_ID} ${REGISTRY}/registry-gui:latest
+            docker push {$REGISTRY}/registry-gui:latest
+          '''
+        }
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        withKubeConfig(credentialsId: 'ce42c69e-6274-4126-93f8-4339dfd0ad85', namespace: 'docker') {
+          echo 'Deploying...'
+          sh '''
+            sed "s/{TAG}/${BUILD_ID}/g" deployments/registry-gui/01-deployment.yaml
+            kubectl apply -f deployments/registry-gui
+            kubectl rollout status deployment registry-gui
+          '''
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-gui
+  namespace: docker
+  labels:
+    app: registry-gui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: registry-gui
+      labels:
+        app: registry-gui
+    spec:
+      containers:
+        - name: registry-gui
+          image: docker.rcomanne.nl/registry-gui:{TAG}
+          imagePullPolicy: Always
+          env:
+            - name: REGISTRY
+              value: "docker.rcomanne.nl"
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: registry-gui
+                  key: username
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: registry-gui
+                  key: password
+          ports:
+            - containerPort: 8080
+              name: web
+          securityContext:
+            allowPrivilegeEscalation: false
+      restartPolicy: Always
+      securityContext:
+        runAsGroup: 1010
+        runAsNonRoot: true
+        runAsUser: 1010
+  selector:
+    matchLabels:
+      app: registry-gui
