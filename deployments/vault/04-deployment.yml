@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: vault
-          image: vault:1.7.2
+          image: vault:1.9.0
           args:
             - server
           imagePullPolicy: Always

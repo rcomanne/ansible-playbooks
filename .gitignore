@@ -77,3 +77,6 @@ fabric.properties
 
 deployments/**/??-basic-auth.yml
 deployments/**/??-secret.yml
+
+**/.terraform/
+**/.terraform.lock.hcl

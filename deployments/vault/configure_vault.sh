@@ -1,16 +1,39 @@
 #!/bin/bash
 
-vault policy write admins ./policies/admins.hcl
+# Enable audit logging
+vault audit enable file file_path=/vault/logs/audit.log
 
-vault auth enable userpass
-read -rsp 'Please provice a password: ' password
-vault write "auth/userpass/users/${USER}" password=${password} policies=admins
+# Enable secret backends
+enabled_secrets=$(vault secrets list -format json)
+# personal-accounts
+if [[ $(echo "${enabled_secrets}" | jq '. | has("personal-accounts/")') == 'true' ]]; then
+  echo 'personal-accounts already exists'
+else
+  vault secrets enable -path=personal-accounts kv-v2
+fi
+# web-services
+if [[ $(echo "${enabled_secrets}" | jq '. | has("web-services/")') == 'true' ]]; then
+  echo 'web-services already exists'
+else
+  vault secrets enable -path=web-services kv-v2
+fi
+# recovery
+if [[ $(echo "${enabled_secrets}" | jq '. | has("recovery/")') == 'true' ]]; then
+  echo 'recovery already exists'
+else
+  vault secrets enable -path=personal-accounts kv-v2
+fi
 
-vault auth enable kubernetes
+vault read auth/userpass/users/${USER} || {
+read -rsp 'Please provide a password: ' password
+vault write auth/userpass/users/${USER} \
+  password="${password}" \
+  policies=admin
+}
 
-echo 'https://www.vaultproject.io/docs/platform/k8s/helm/examples/kubernetes-auth'
-echo 'The easiest way to get this, is to go in to the Vault pod'
-echo 'kubectl exec -it <VAULT_POD> -- /bin/ash'
+#echo 'https://www.vaultproject.io/docs/platform/k8s/helm/examples/kubernetes-auth'
+#echo 'The easiest way to get this, is to go in to the Vault pod'
+#echo 'kubectl exec -it <VAULT_POD> -- /bin/ash'
 
 #echo 'First, the JWT'
 #echo 'cat /var/run/secrets/kubernetes.io/serviceaccount/token'
