@@ -19,6 +19,16 @@ terraform {
   required_version = ">= 1.0.0"
 }
 
+resource "vault_mount" "recovery" {
+  path = "recovery"
+  type = "kv-v2"
+}
+
+resource "vault_mount" "personal-accounts" {
+  path = "personal-accounts"
+  type = "kv-v2"
+}
+
 data "vault_policy_document" "admin" {
   rule {
     path         = "sys/health"
@@ -100,6 +110,11 @@ resource "vault_auth_backend" "userpass" {
 # Adding Kubernetes auth method
 resource "vault_auth_backend" "kubernetes" {
   type = "kubernetes"
+}
+
+resource "vault_mount" "web-services" {
+  path = "web-services"
+  type = "kv-v2"
 }
 
 data "vault_policy_document" "web-services" {
