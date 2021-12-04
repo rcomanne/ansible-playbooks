@@ -4,11 +4,10 @@ metadata:
   name: docker-registry
   namespace: docker
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: http,https
+    traefik.ingress.kubernetes.io/router.entrypoints: https
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:
-  ingressClassName: 'traefik-external'
   rules:
     - host: docker.rcomanne.nl
       http:
@@ -20,6 +19,3 @@ spec:
                 name: docker-registry
                 port:
                   name: web
-  tls:
-    - hosts:
-        - docker.rcomanne.nl

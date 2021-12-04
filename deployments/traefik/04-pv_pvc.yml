@@ -7,7 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: traefik
-    app.kubernetes.io/version: 2
+    app.kubernetes.io/version: "2"
 spec:
   storageClassName: manual
   capacity:
@@ -27,7 +27,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: traefik
-    app.kubernetes.io/version: 2
+    app.kubernetes.io/version: "2"
 spec:
   storageClassName: manual
   resources:

@@ -7,13 +7,12 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: traefik
-    app.kubernetes.io/version: 2
+    app.kubernetes.io/version: "2"
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: http,https
+    traefik.ingress.kubernetes.io/router.entrypoints: https
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:
-  ingressClassName: 'traefik-external'
   rules:
     - host: traefik.rcomanne.nl
       http:
@@ -25,6 +24,3 @@ spec:
                 name: traefik-dashboard
                 port:
                   name: admin
-  tls:
-    - hosts:
-        - traefik.rcomanne.nl

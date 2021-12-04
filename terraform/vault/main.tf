@@ -91,6 +91,11 @@ data "vault_policy_document" "admin" {
     capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     description = "Handle all web-services secrets"
   }
+  rule {
+    path         = "*"
+    capabilities = ["create", "read", "update", "delete", "list"]
+    description = "Read, create list and update everything"
+  }
 }
 
 # Adding Admin policy and user
@@ -108,6 +113,10 @@ resource "vault_auth_backend" "userpass" {
 }
 
 # Adding Kubernetes auth method
+data "vault_kubernetes_auth_backend_config" "config" {
+
+}
+
 resource "vault_auth_backend" "kubernetes" {
   type = "kubernetes"
 }
@@ -138,4 +147,9 @@ resource "vault_kubernetes_auth_backend_role" "services_vault-access" {
   token_ttl                        = 3600
   token_max_ttl                    = 18000
   token_policies                   = ["web-services"]
+}
+
+resource "vault_mount" "elk" {
+  path = "elk"
+  type = "kv-v2"
 }

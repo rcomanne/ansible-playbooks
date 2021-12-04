@@ -9,7 +9,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:
-  ingressClassName: 'traefik-external'
   rules:
     - host: vault.rcomanne.nl
       http:
@@ -21,6 +20,3 @@ spec:
                 name: vault
                 port:
                   name: web
-  tls:
-    - hosts:
-        - vault.rcomanne.nl

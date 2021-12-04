@@ -1,0 +1,44 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kibana
+  namespace: elk
+  labels:
+    app.kubernetes.io/name: elk
+    app.kubernetes.io/component: kibana
+    app.kubernetes.io/version: "7"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: elk
+      app.kubernetes.io/component: kibana
+      app.kubernetes.io/version: "7"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: elk
+        app.kubernetes.io/component: kibana
+        app.kubernetes.io/version: "7"
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:7.15.2
+          ports:
+            - containerPort: 5601
+              name: web
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /usr/share/kibana/config/kibana.yml
+              subPath: kibana.yml
+              name: kibana-config
+            - mountPath: /usr/share/kibana/config/kibana.keystore
+              subPath: kibana.keystore
+              name: kibana-keystore
+      volumes:
+        - name: kibana-config
+          configMap:
+            name: kibana
+        - name: kibana-keystore
+          secret:
+            secretName: kibana

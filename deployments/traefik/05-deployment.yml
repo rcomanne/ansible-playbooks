@@ -7,30 +7,35 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: traefik
-    app.kubernetes.io/version: 2
+    app.kubernetes.io/version: "2"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
       app.kubernetes.io/component: traefik
+      app.kubernetes.io/version: "2"
   template:
     metadata:
       labels:
         app.kubernetes.io/name: traefik
         app.kubernetes.io/component: traefik
-        app.kubernetes.io/version: 2
+        app.kubernetes.io/version: "2"
     spec:
       serviceAccountName: traefik
       containers:
         - name: traefik
-          image: traefik:v2.4
+          image: traefik:v2.5
           imagePullPolicy: Always
+          args:
+            - --configFile=/etc/traefik/traefik.yaml
           volumeMounts:
             - mountPath: /etc/traefik
               name: config
             - mountPath: /acme
               name: acme
+            - mountPath: /var/log/traefik
+              name: logs
           ports:
             - name: http
               containerPort: 80
@@ -38,6 +43,34 @@ spec:
               containerPort: 443
             - name: admin
               containerPort: 8080
+          readinessProbe:
+            httpGet:
+              port: admin
+              path: /ping
+          livenessProbe:
+            httpGet:
+              port: admin
+              path: /ping
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:7.15.2
+          env:
+            - name: ES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: elasticsearch
+            - name: ES_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: elasticsearch
+          volumeMounts:
+            - mountPath: /var/log/traefik
+              name: logs
+            - mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+              readOnly: true
+              name: beats-config
       volumes:
         - name: config
           configMap:
@@ -45,3 +78,8 @@ spec:
         - name: acme
           persistentVolumeClaim:
             claimName: traefik-pvc
+        - name: logs
+          emptyDir: {}
+        - name: beats-config
+          configMap:
+            name: beats

@@ -8,6 +8,6 @@ data:
   config: |
     address-pools:
     - name: default
-      protocol: layer2
+      protocol: bgp
       addresses:
-      - {{ ansible_facts['eth0']['ipv4']['address'] }}-{{ ansible_facts['eth0']['ipv4']['address'] }}
+      - {{ ansible_facts['eth0']['ipv4']['address'] }}/32

@@ -8,7 +8,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: cr
 spec:
-  ingressClassName: 'traefik-external'
   rules:
     - host: registry.rcomanne.nl
       http:
@@ -20,6 +19,3 @@ spec:
                 name: registry-gui
                 port:
                   name: web
-  tls:
-    - hosts:
-        - registry.rcomanne.nl
