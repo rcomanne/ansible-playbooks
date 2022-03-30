@@ -1,8 +1,9 @@
 ---
 - hosts: contabo
   remote_user: rcomanne
+  vars:
+    local_user: rcomanne
 
   roles:
     - base
-    - docker
     - kubernetes

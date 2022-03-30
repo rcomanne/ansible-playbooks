@@ -2,6 +2,14 @@
 - name: Disable ROOT login
   lineinfile:
     path: /etc/ssh/sshd_config
+    regexp: '#?PasswordAuthentication yes'
+    line: 'PermitRootLogin no'
+    state: present
+  notify: sshd restart
+
+- name: Disable PASSWORD login
+  lineinfile:
+    path: /etc/ssh/sshd_config
     regexp: '#?PermitRootLogin yes'
     line: 'PermitRootLogin no'
     state: present

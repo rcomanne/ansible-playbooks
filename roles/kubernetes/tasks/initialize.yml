@@ -4,19 +4,27 @@
     cmd: "kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{ ansible_facts['eth0']['ipv4']['address'] }}"
     creates: /etc/kubernetes/admin.conf
 
-- name: Ensure .kube dir exists
+- name: Ensure root .kube dir exists
   file:
-    path: "{{ home_dir }}/.kube"
+    path: "/root/.kube"
     state: directory
     owner: "{{ user }}"
     group: "{{ group }}"
     mode: 0700
 
-- name: Copy admin config.yml to local
+- name: Copy admin config.yml to root home
   copy:
     src: /etc/kubernetes/admin.conf
+    dest: "/root/.kube/config.yml"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy admin config.yml to local
+  copy:
     remote_src: true
-    dest: "{{ home_dir }}/.kube/config.yml"
+    src: /etc/kubernetes/admin.conf
+    dest: "/{{ local_user }}/.kube/config.yml"
     owner: "{{ user }}"
     group: "{{ group }}"
     mode: 0600

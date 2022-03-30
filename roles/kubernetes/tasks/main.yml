@@ -1,18 +1,19 @@
 ---
+- name: Install Docker
+  import_tasks: install_docker.yml
+  become: yes
+
 - name: Pre Kubernetes configuration
   import_tasks: pre_config.yml
   become: yes
-  become_user: root
 
 - name: Kubernetes
   import_tasks: install.yml
   become: yes
-  become_user: root
 
 - name: Initialize Kubernetes
   import_tasks: initialize.yml
   become: yes
-  become_user: root
 
 - name: Post Kubernetes configuration
   import_tasks: post_config.yml

@@ -4,17 +4,17 @@
     id: 0EBFCD88
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-  become: yes
 
 - name: Add repository
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
     state: present
-  become: yes
 
 - name: Install
   apt:
     name: docker-ce
     update_cache: yes
     state: latest
-  become: yes
+
+# TODO: In order to get k8s working properly, we need to run with the systemd cgroupdriver
+# Add to service file, --exec-opt native.cgroupdriver=systemd

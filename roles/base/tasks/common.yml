@@ -34,13 +34,21 @@
     - { port: 6443, protocol:  tcp, comment: "k8s kube-apiserver" }
     - { port: 10250, protocol:  tcp, comment: "k8s kubelet" }
     - { port: 10253, protocol:  tcp, comment: "k8s kube-proxy" }
-    - { port: 2456, protocol:  udp, comment: "valheim port" }
-    - { port: 2457, protocol:  udp, comment: "valheim port" }
-    - { port: 2458, protocol:  udp, comment: "valheim port" }
-  notify: reload ufw
+    - { port: 10259, protocol:  tcp, comment: "k8s kube-scheduler" }
+    - { port: 10257, protocol:  tcp, comment: "k8s kube-controller-manager" }
+  register: ufw_rules
 
 - name: Enable UFW
   ufw:
     state: enabled
     default: deny
+  register: ufw_state
 
+- name: Reload ufw
+  ufw:
+    state: reloaded
+  when: ufw_rules.changed or ufw_state.changed | bool
+
+- name: Reboot
+  reboot:
+  when: ufw_rules.changed or ufw_state.changed | bool
