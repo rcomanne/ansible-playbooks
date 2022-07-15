@@ -1,5 +1,5 @@
 ---
-- name: Ensure rcomanne user exists
+- name: Ensure user exists
   user:
     name: "{{ user }}"
     group: "{{ group }}"
