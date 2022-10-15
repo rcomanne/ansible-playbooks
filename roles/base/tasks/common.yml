@@ -8,6 +8,9 @@
       - wget
       - gnupg
       - fail2ban
+      - zsh
+      - git
+      - net-tools
     state: latest
 
 - name: Ensure hostname is set
@@ -34,8 +37,8 @@
     - { port: 6443, protocol:  tcp, comment: "k8s kube-apiserver" }
     - { port: 10250, protocol:  tcp, comment: "k8s kubelet" }
     - { port: 10253, protocol:  tcp, comment: "k8s kube-proxy" }
-    - { port: 10259, protocol:  tcp, comment: "k8s kube-scheduler" }
     - { port: 10257, protocol:  tcp, comment: "k8s kube-controller-manager" }
+    - { port: 10259, protocol:  tcp, comment: "k8s kube-scheduler" }
   register: ufw_rules
 
 - name: Enable UFW

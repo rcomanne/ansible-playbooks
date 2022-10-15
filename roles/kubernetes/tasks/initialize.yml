@@ -8,8 +8,8 @@
   file:
     path: "/root/.kube"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ group }}"
+    owner: root
+    group: root
     mode: 0700
 
 - name: Copy admin config.yml to root home
@@ -24,7 +24,7 @@
   copy:
     remote_src: true
     src: /etc/kubernetes/admin.conf
-    dest: "/{{ local_user }}/.kube/config.yml"
+    dest: "/{{ local_user }}/.kube/config-ansible.yml"
     owner: "{{ user }}"
     group: "{{ group }}"
     mode: 0600

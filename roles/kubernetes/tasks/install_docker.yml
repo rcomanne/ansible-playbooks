@@ -15,6 +15,3 @@
     name: docker-ce
     update_cache: yes
     state: latest
-
-# TODO: In order to get k8s working properly, we need to run with the systemd cgroupdriver
-# Add to service file, --exec-opt native.cgroupdriver=systemd

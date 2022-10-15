@@ -3,18 +3,30 @@
   command:
     cmd: "kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/namespace.yaml"
 
-- name: Template out MetalLB ConfigMap
+- name: Template out MetalLB IP Address Pool
   template:
-    src: metallb_configmap.yml.j2
-    dest: /tmp/metallb_configmap.yml
+    src: metallb_ipaddresspool.yml.j2
+    dest: /tmp/metallb_ipaddresspool.yml
     owner: "{{ user }}"
     group: "{{ group }}"
     mode: 0600
 
-- name: Apply MetalLB ConfigMap
-  command:
-    cmd: kubectl apply -f /tmp/metallb_configmap.yml
+- name: Template out MetalLB IP Advertisement
+  template:
+    src: metallb_advertisement.yml.j2
+    dest: /tmp/metallb_advertisement.yml
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600
 
 - name: Add MetalLB
   command:
     cmd: "kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml"
+
+- name: Apply MetalLB IP Address Pool
+  command:
+    cmd: kubectl apply -f /tmp/metallb_ipaddresspool.yml
+
+- name: Apply MetalLB Advertisement
+  command:
+    cmd: kubectl apply -f /tmp/metallb_advertisement.yml

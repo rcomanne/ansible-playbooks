@@ -1,9 +1,16 @@
 ---
+- name: Ensure user primary group exists
+  group:
+    name: "{{ group }}"
+    state: present
+
 - name: Ensure user exists
   user:
     name: "{{ user }}"
     group: "{{ group }}"
     home: "{{ home_dir }}"
+    password: "{{ password }}"
+    shell: /bin/bash
     state: present
     groups:
       - sudo
@@ -23,4 +30,4 @@
     state: present
     key: "{{ item }}"
   loop:
-    - "{{ lookup('file', '$HOME/.ssh/id_rsa.pub') }}"
+    - "{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"

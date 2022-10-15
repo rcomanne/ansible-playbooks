@@ -1,0 +1,9 @@
+---
+- hosts: contabo
+  remote_user: rcomanne
+  vars:
+    username: rcomanne
+
+  roles:
+    - base
+    - microk8s
