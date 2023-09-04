@@ -1,0 +1,7 @@
+---
+- hosts: contabo
+  remote_user: rcomanne
+  name: Update all packages
+
+  roles:
+    - update

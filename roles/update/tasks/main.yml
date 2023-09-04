@@ -1,0 +1,9 @@
+---
+- name: Update all apt packages
+  apt:
+    name: "*"
+    autoclean: true
+    autoremove: true
+    state: latest
+    update_cache: true
+  become: true
